@@ -9,14 +9,16 @@ It runs on your machine. There is no account, no telemetry, no upload. The only 
 ```text
 $ veil redact fixtures/support-ticket.md --model
 
-Customer: [REDACTED_1] at [REDACTED_2].
+Customer: [PERSON_1] at [CUSTOMER_1].
 Contact: [EMAIL_1] / [PHONE_1]
-Internal project: [REDACTED_3]
+Internal project: [PROJECT_1]
 Staging host: [HOST_1]
 ...
 AWS_SECRET_ACCESS_KEY=[AWS_SECRET_1]
 DATABASE_URL=[DATABASE_URL_1]
 ```
+
+![The Veil UI: input on the left, redacted output and findings on the right](docs/screenshot.png)
 
 ---
 

@@ -101,7 +101,7 @@ test('the model can add a finding, and invented quotes are dropped', async () =>
 
   const result = await scan(text, { client, useModel: true });
   assert.equal(result.model.dropped, 1);
-  assert.equal(result.text, '[REDACTED_1] says the migration is blocked.');
+  assert.equal(result.text, '[PERSON_1] says the migration is blocked.');
   assert.deepEqual(result.stats.bySource, { model: 1 });
 });
 

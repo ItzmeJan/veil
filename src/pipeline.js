@@ -25,9 +25,21 @@ export async function scan(text, options = {}) {
 
   if (options.useModel && options.client) {
     const result = await detectWithModel(options.client, text);
-    modelSpans = result.spans;
     dropped = result.dropped;
     modelError = result.error;
+
+    // The model sometimes repeats what a rule already found, with a coarser
+    // label ("Person name" over an email address) and a stray trailing period.
+    // If a deterministic span covers most of the quote, keep the precise one.
+    const known = [...ruleSpans, ...entropySpans];
+    const coveredByRule = (candidate) =>
+      known.some((span) => {
+        const overlap = Math.min(span.end, candidate.end) - Math.max(span.start, candidate.start);
+        if (overlap <= 0) return false;
+        const shorter = Math.min(span.end - span.start, candidate.end - candidate.start);
+        return overlap / shorter >= 0.8;
+      });
+    modelSpans = result.spans.filter((candidate) => !coveredByRule(candidate));
   }
 
   const spans = mergeSpans([...ruleSpans, ...entropySpans, ...modelSpans]);
